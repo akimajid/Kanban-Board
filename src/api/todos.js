@@ -31,23 +31,22 @@ export const createTodo = async (todo) => {
 };
 
 export const getItems = async (todoId) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await axios.get(`${API_BASE_URL}/todos/${todoId}/items`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Error fetching items:",
-      error.response?.data || error.message
-    );
-    throw new Error("Failed to fetch items");
-  }
-};
+    try {
+      const token = localStorage.getItem("token");
+  
+      const response = await axios.get(`${API_BASE_URL}/todos/${todoId}/items`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching items:", error.response?.data || error.message);
+      throw new Error("Failed to fetch items");
+    }
+  };
 
 export const createItem = async (todoId, data) => {
   try {

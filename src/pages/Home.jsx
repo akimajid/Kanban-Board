@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  getTodos,
-  getItems,
-  createItem,
-  updateItem,
-  deleteItem,
-} from "../api/todos";
+import { getTodos, getItems, createItem, updateItem, deleteItem } from "../api/todos";
 import Board from "../components/Board";
 
 const Home = () => {
@@ -94,19 +88,24 @@ const Home = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-8">
-      <div className="grid grid-cols-3 gap-4">
-        {todos.map((todo) => (
-          <Board
+      {todos.length === 0 ? (
+        <p>No todos available.</p>
+      ) : (
+        <div className="grid grid-cols-3 gap-4">
+          {todos.map((todo) => (
+            <Board
             key={todo.id}
             title={todo.title}
-            tasks={tasks.filter((task) => task.todoId === todo.id)}
+            descriptions={todo.description}
+            tasks={tasks.filter((task) => task.todo_id === todo.id)}
             onMoveLeft={handleMoveLeft}
             onMoveRight={handleMoveRight}
             onEdit={handleEdit}
             onDelete={handleDelete}
-          />
-        ))}
-      </div>
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
