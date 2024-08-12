@@ -1,48 +1,80 @@
-import React from "react";
+import React, { useState } from "react";
+import { BsThreeDots } from "react-icons/bs"; // Import the icon
 
 const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <div className="bg-white p-4 mb-4 rounded-lg shadow-sm flex flex-col">
-      <div className="flex justify-between mb-2">
-        <div>
-          <h3 className="text-lg font-semibold">{task.name}</h3>
-          <p className="p-8">{task.description}</p>
+      <div className="mb-2">
+        <h3 className="text-lg font-semibold">{task.name}</h3>
+        <p className="p-2">{task.description}</p>
+      </div>
+
+      <hr className="border-dashed border-t-2 border-gray-300 mb-4" />
+
+      <div className="flex items-center justify-between relative">
+        <div className="flex items-center flex-grow">
+          <div className="h-3 bg-gray-300 rounded w-full">
+            <div
+              className="h-full bg-[#02939e] rounded"
+              style={{ width: `${task.progress_percentage}%` }}
+            />
+          </div>
+          <div className="ml-4 text-gray-700 font-semibold text-lg min-w-max">
+            {task.progress_percentage}%
+          </div>
         </div>
-        <div className="flex flex-col justify-between">
-          <div className="text-sm text-gray-600">Progress: {task.progress_percentage}%</div>
-          <div className="flex space-x-2 mt-2">
+        <button
+          onClick={toggleDropdown}
+          className="ml-4 bg-gray-200 text-gray-700 p-2 rounded"
+        >
+          <BsThreeDots size={20} /> {/* Using the icon here */}
+        </button>
+        {dropdownOpen && (
+          <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
             <button
-              onClick={() => onMoveLeft(task.id)}
-              className="bg-blue-500 text-white px-2 py-1 rounded"
+              onClick={() => {
+                onMoveLeft(task.id);
+                toggleDropdown();
+              }}
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
               Move Left
             </button>
             <button
-              onClick={() => onMoveRight(task.id)}
-              className="bg-green-500 text-white px-2 py-1 rounded"
+              onClick={() => {
+                onMoveRight(task.id);
+                toggleDropdown();
+              }}
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
               Move Right
             </button>
             <button
-              onClick={() => onEdit(task.id)}
-              className="bg-yellow-500 text-white px-2 py-1 rounded"
+              onClick={() => {
+                onEdit(task.id);
+                toggleDropdown();
+              }}
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
               Edit
             </button>
             <button
-              onClick={() => onDelete(task.id)}
-              className="bg-red-500 text-white px-2 py-1 rounded"
+              onClick={() => {
+                onDelete(task.id);
+                toggleDropdown();
+              }}
+              className="block w-full text-left px-4 py-2 text-red-700 hover:bg-red-100"
             >
               Delete
             </button>
           </div>
-        </div>
-      </div>
-      <div className="h-1 bg-gray-300 rounded">
-        <div
-          className="h-full bg-blue-500 rounded"
-          style={{ width: `${task.progress_percentage}%` }}
-        />
+        )}
       </div>
     </div>
   );
