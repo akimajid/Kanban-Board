@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getTodos, getItems, createItem, updateItem, deleteItem } from "../api/todos";
+import { getTodos, getItems, updateItem, deleteItem } from "../api/todos";
 import Board from "../components/Board";
 
 const Home = () => {
@@ -94,14 +94,15 @@ const Home = () => {
         <div className="grid grid-cols-3 gap-4">
           {todos.map((todo) => (
             <Board
-            key={todo.id}
-            title={todo.title}
-            descriptions={todo.description}
-            tasks={tasks.filter((task) => task.todo_id === todo.id)}
-            onMoveLeft={handleMoveLeft}
-            onMoveRight={handleMoveRight}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
+              key={todo.id}
+              title={todo.title}
+              descriptions={todo.description}
+              tasks={tasks.filter((task) => task.todo_id === todo.id)} // Ensure consistency in field name
+              onMoveLeft={handleMoveLeft}
+              onMoveRight={handleMoveRight}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              todoId={todo.id}
             />
           ))}
         </div>
