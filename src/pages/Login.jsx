@@ -6,25 +6,25 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is already logged in
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/v1"); // Redirect to the v1 page if already logged in
+      navigate("/v1");
     }
   }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = await login(email, password); // Assuming `login` returns the token directly
-      localStorage.setItem("token", token); // Store the token in localStorage
+      const token = await login(email, password);
+      localStorage.setItem("token", token);
       setMessage("Login successful!");
-      navigate("/v1"); // Redirect to the v1 page upon successful login
+      window.location.reload();
+      navigate("/v1");
     } catch (error) {
-      setMessage("Login failed: " + error.message); // Display a more specific error message
+      setMessage("Login failed: " + error.message);
     }
   };
 
