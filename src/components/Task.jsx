@@ -1,12 +1,34 @@
 import React, { useState } from "react";
-import { BsThreeDots } from "react-icons/bs"; // Import the three dots icon
-import { FaCheckCircle } from "react-icons/fa"; // Import the check circle icon
+import { BsThreeDots } from "react-icons/bs";
+import { FaCheckCircle } from "react-icons/fa";
+import DeleteTaskModal from "./DeleteTaskModal";
 
 const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleDeleteClick = (taskId) => {
+    setTaskToDelete(taskId);
+    setModalOpen(true);
+    toggleDropdown();
+  };
+
+  const confirmDelete = () => {
+    if (taskToDelete !== null) {
+      onDelete(taskToDelete);
+      setTaskToDelete(null);
+      setModalOpen(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setTaskToDelete(null);
+    setModalOpen(false);
   };
 
   return (
@@ -74,10 +96,7 @@ const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
               Edit
             </button>
             <button
-              onClick={() => {
-                onDelete(task.id);
-                toggleDropdown();
-              }}
+              onClick={() => handleDeleteClick(task.id)}
               className="block w-full text-left px-4 py-2 text-red-700 hover:bg-red-100"
             >
               Delete
@@ -85,6 +104,12 @@ const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
           </div>
         )}
       </div>
+
+      <DeleteTaskModal
+        isOpen={modalOpen}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
     </div>
   );
 };

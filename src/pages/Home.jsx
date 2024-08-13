@@ -79,8 +79,20 @@ const Home = () => {
 
   const handleDelete = async (taskId) => {
     try {
-      await deleteItem(taskId);
-      setTasks(tasks.filter((task) => task.id !== taskId));
+      const task = tasks.find((task) => task.id === taskId);
+
+      if (task) {
+        const todoId = task.todo_id;
+        if (!todoId) {
+          console.error("Todo ID is undefined");
+          return;
+        }
+
+        await deleteItem(todoId, taskId);
+        setTasks(tasks.filter((task) => task.id !== taskId));
+      } else {
+        console.error("Task not found");
+      }
     } catch (error) {
       console.error("Failed to delete task", error);
     }
@@ -97,7 +109,7 @@ const Home = () => {
               key={todo.id}
               title={todo.title}
               descriptions={todo.description}
-              tasks={tasks.filter((task) => task.todo_id === todo.id)} // Ensure consistency in field name
+              tasks={tasks.filter((task) => task.todo_id === todo.id)}
               onMoveLeft={handleMoveLeft}
               onMoveRight={handleMoveRight}
               onEdit={handleEdit}

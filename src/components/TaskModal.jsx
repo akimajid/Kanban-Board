@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { createItem } from "../api/todos"; // Replace with your actual API import
-import { useAuth } from "../contexts/AuthContext";
+import { createItem } from "../api/todos";
 
 const TaskModal = ({ isOpen, onClose, todoId }) => {
   const [taskName, setTaskName] = useState("");
   const [progressPercentage, setProgressPercentage] = useState();
-  const { authToken } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,20 +13,21 @@ const TaskModal = ({ isOpen, onClose, todoId }) => {
       return;
     }
 
+    const progress = parseInt(progressPercentage, 10);
+
+    if (isNaN(progress) || progress < 0 || progress > 100) {
+      console.error("Progress percentage must be between 0 and 100");
+      return;
+    }
+
     try {
       const newTask = {
         name: taskName,
-        progress_percentage: parseInt(progressPercentage, 10),
+        progress_percentage: progress,
       };
 
-      // Debugging logs
-      console.log("New Task:", newTask);
-      console.log("Auth Token:", authToken);
-      console.log("Todo ID:", todoId); // Log the todoId for debugging
+      await createItem(todoId, newTask);
 
-      await createItem(todoId, newTask); // Pass todoId to createItem
-
-      // Optional: Reload the page or update state to reflect the new task
       window.location.reload();
 
       onClose();

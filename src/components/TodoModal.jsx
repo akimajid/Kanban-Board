@@ -29,7 +29,7 @@ const TodoModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center">
+    <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">
           Create New Group
