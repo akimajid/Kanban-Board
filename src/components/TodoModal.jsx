@@ -45,6 +45,7 @@ const TodoModal = ({ isOpen, onClose }) => {
             <input
               type="text"
               id="title"
+              placeholder="Add title here..."
               value={todoTitle}
               onChange={(e) => setTodoTitle(e.target.value)}
               className="w-full border border-gray-300 p-2 rounded text-gray-800"
@@ -61,6 +62,7 @@ const TodoModal = ({ isOpen, onClose }) => {
             <textarea
               id="description"
               value={todoDescription}
+              placeholder="Write descriptions here..."
               onChange={(e) => setTodoDescription(e.target.value)}
               className="w-full border border-gray-300 p-2 rounded text-gray-800"
               rows="4"

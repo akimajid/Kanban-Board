@@ -46,6 +46,7 @@ const Login = () => {
               id="email"
               type="email"
               value={email}
+              placeholder="Email..."
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#02939e]"
               required
@@ -62,6 +63,7 @@ const Login = () => {
               id="password"
               type="password"
               value={password}
+              placeholder="Password..."
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 mb-4 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#02939e]"
               required
