@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext"; // Adjust the path as necessary
-import TodoModal from "./modals/TodoModal"; // Import TodoModal
+import { useAuth } from "../contexts/AuthContext";
+import TodoModal from "./modals/TodoModal";
 
 const Navbar = () => {
   const { authToken, clearAuthToken } = useAuth();
@@ -20,7 +20,9 @@ const Navbar = () => {
     <header className="bg-white border border-gray-400 text-white p-6 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          <h1 className="text-xl font-bold text-black">Product Roadmap</h1>
+          <Link to="/" className="text-xl font-bold text-black">
+            Product Roadmap
+          </Link>
           {authToken && (
             <button
               onClick={openModal}
