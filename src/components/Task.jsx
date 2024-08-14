@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
-import { FaCheckCircle } from "react-icons/fa";
-import DeleteTaskModal from "./DeleteTaskModal";
-import EditTaskModal from "./EditTaskModal";
+import { FaCheckCircle, FaArrowRight, FaArrowLeft } from "react-icons/fa";
+import { BiEditAlt } from "react-icons/bi";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import DeleteTaskModal from "./modals/DeleteTaskModal";
+import EditTaskModal from "./modals/EditTaskModal";
 
 const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -85,8 +87,9 @@ const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
                 onMoveLeft(task.id);
                 toggleDropdown();
               }}
-              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+              className="flex items-center w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
+              <FaArrowLeft className="mr-3" />
               Move Left
             </button>
             <button
@@ -94,20 +97,23 @@ const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
                 onMoveRight(task.id);
                 toggleDropdown();
               }}
-              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+              className="flex items-center w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
+              <FaArrowRight className="mr-3" />
               Move Right
             </button>
             <button
               onClick={handleEditClick}
-              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+              className="flex items-center w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
+              <BiEditAlt size={20} className="mr-2" />
               Edit
             </button>
             <button
               onClick={() => handleDeleteClick(task.id)}
-              className="block w-full text-left px-4 py-2 text-red-700 hover:bg-red-100"
+              className="flex items-center w-full text-left px-4 py-2 text-red-700 hover:bg-red-100"
             >
+              <RiDeleteBin5Line size={18} className="mr-2" />
               Delete
             </button>
           </div>

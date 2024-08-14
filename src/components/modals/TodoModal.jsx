@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { createTodo } from "../api/todos";
-import { useAuth } from "../contexts/AuthContext";
+import { createTodo } from "../../api/todos";
+import { useAuth } from "../../contexts/AuthContext";
 
 const TodoModal = ({ isOpen, onClose }) => {
   const [todoTitle, setTodoTitle] = useState("");

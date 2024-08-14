@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { updateItem } from "../api/todos";
+import { updateItem } from "../../api/todos";
 
 const EditTaskModal = ({ isOpen, onClose, task, onSave }) => {
   const [taskName, setTaskName] = useState("");

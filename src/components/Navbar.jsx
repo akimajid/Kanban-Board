@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext"; // Adjust the path as necessary
-import TodoModal from "./TodoModal"; // Import TodoModal
+import TodoModal from "./modals/TodoModal"; // Import TodoModal
 
 const Navbar = () => {
   const { authToken, clearAuthToken } = useAuth();

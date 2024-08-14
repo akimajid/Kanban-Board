@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { FiPlusCircle } from "react-icons/fi"; // Import the icon
+import { FiPlusCircle } from "react-icons/fi";
 import Task from "./Task";
-import TaskModal from "./TaskModal";
+import TaskModal from "./modals/TaskModal";
 
 const backgroundColors = [
   "rgba(1, 149, 159, 0.2)",
@@ -18,7 +18,7 @@ const Board = ({
   onMoveRight,
   onEdit,
   onDelete,
-  todoId, // Add todoId as a prop
+  todoId,
 }) => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
@@ -78,7 +78,11 @@ const Board = ({
           New Task
         </button>
 
-        <TaskModal isOpen={isTaskModalOpen} onClose={closeModal} todoId={todoId} />
+        <TaskModal
+          isOpen={isTaskModalOpen}
+          onClose={closeModal}
+          todoId={todoId}
+        />
       </div>
     </div>
   );
