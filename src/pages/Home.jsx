@@ -151,7 +151,9 @@ const Home = () => {
   return (
     <div className="max-w-7xl mx-auto p-8">
       {todos.length === 0 ? (
-        <p>No todos available.</p>
+        <div className="flex justify-center items-center h-full py-20">
+          <p className="text-gray-500 text-lg italic">No todos available.</p>
+        </div>
       ) : (
         <div className="grid grid-cols-3 gap-4">
           {todos.map((todo) => (
