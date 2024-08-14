@@ -43,6 +43,7 @@ const EditTaskModal = ({ isOpen, onClose, task, onSave }) => {
       }
       window.location.reload();
       onClose();
+      return result;
     } catch (error) {
       console.error("Failed to edit task", error);
     }
@@ -91,22 +92,6 @@ const EditTaskModal = ({ isOpen, onClose, task, onSave }) => {
               required
             />
           </div>
-          {/* <div className="mb-4">
-            <label
-              htmlFor="target_todo_id"
-              className="block text-sm font-medium mb-2 text-gray-700"
-            >
-              Target Todo ID
-            </label>
-            <input
-              type="text"
-              id="target_todo_id"
-              placeholder="Enter target todo ID..."
-              value={targetTodoId}
-              onChange={(e) => setTargetTodoId(e.target.value)}
-              className="w-full border border-gray-300 p-2 rounded text-gray-800"
-            />
-          </div> */}
           <div className="flex justify-end">
             <button
               type="button"

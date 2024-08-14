@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { getTodos, getItems, updateItem, deleteItem } from "../api/todos";
+import {
+  getTodos,
+  getItems,
+  updateItem,
+  moveTask,
+  deleteItem,
+} from "../api/todos";
 import Board from "../components/Board";
 
 const Home = () => {
@@ -29,16 +35,38 @@ const Home = () => {
   const handleMoveLeft = async (taskId) => {
     try {
       const task = tasks.find((task) => task.id === taskId);
+      if (!task) {
+        console.error("Task not found");
+        return;
+      }
+
       const currentTodoIndex = todos.findIndex(
-        (todo) => todo.id === task.todoId
+        (todo) => todo.id === task.todo_id
       );
+      if (currentTodoIndex === -1) {
+        console.error("Current Todo not found");
+        return;
+      }
 
       if (currentTodoIndex > 0) {
         const newTodoId = todos[currentTodoIndex - 1].id;
-        await updateItem(taskId, { todoId: newTodoId });
-        setTasks(
-          tasks.map((t) => (t.id === taskId ? { ...t, todoId: newTodoId } : t))
-        );
+
+        const result = await moveTask(task.todo_id, taskId, {
+          target_todo_id: newTodoId,
+        });
+
+        if (result && result.error) {
+          console.error("Failed to move task left", result.error);
+        } else {
+          setTasks(
+            tasks.map((t) =>
+              t.id === taskId ? { ...t, todo_id: newTodoId } : t
+            )
+          );
+          alert("Task successfully moved to the previous Group!");
+        }
+      } else {
+        console.error("No previous todo found to move task to");
       }
     } catch (error) {
       console.error("Failed to move task left", error);
@@ -48,16 +76,38 @@ const Home = () => {
   const handleMoveRight = async (taskId) => {
     try {
       const task = tasks.find((task) => task.id === taskId);
+      if (!task) {
+        console.error("Task not found");
+        return;
+      }
+
       const currentTodoIndex = todos.findIndex(
-        (todo) => todo.id === task.todoId
+        (todo) => todo.id === task.todo_id
       );
+      if (currentTodoIndex === -1) {
+        console.error("Current Todo not found");
+        return;
+      }
 
       if (currentTodoIndex < todos.length - 1) {
         const newTodoId = todos[currentTodoIndex + 1].id;
-        await updateItem(taskId, { todoId: newTodoId });
-        setTasks(
-          tasks.map((t) => (t.id === taskId ? { ...t, todoId: newTodoId } : t))
-        );
+
+        const result = await moveTask(task.todo_id, taskId, {
+          target_todo_id: newTodoId,
+        });
+
+        if (result && result.error) {
+          console.error("Failed to move task right", result.error);
+        } else {
+          setTasks(
+            tasks.map((t) =>
+              t.id === taskId ? { ...t, todo_id: newTodoId } : t
+            )
+          );
+          alert("Task successfully moved to the next Group!");
+        }
+      } else {
+        console.error("No next todo found to move task to");
       }
     } catch (error) {
       console.error("Failed to move task right", error);

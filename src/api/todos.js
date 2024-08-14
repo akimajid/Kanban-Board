@@ -116,6 +116,33 @@ export const updateItem = async (todoId, itemId, updatedTask, targetTodoId) => {
   }
 };
 
+export const moveTask = async (currentTodoId, taskId, updateData) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      `${API_BASE_URL}/todos/${currentTodoId}/items/${taskId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updateData),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error in moveTask:", error);
+    return { error: error.message };
+  }
+};
+
 export const deleteItem = async (todoId, itemId) => {
   try {
     const token = localStorage.getItem("token");
