@@ -84,26 +84,35 @@ export const createItem = async (todoId, data) => {
   }
 };
 
-export const updateItem = async (todoId, itemId, data) => {
+export const updateItem = async (todoId, itemId, updatedTask, targetTodoId) => {
+  if (!todoId || !itemId || !targetTodoId) {
+    throw new Error("todoId, itemId, and targetTodoId are required");
+  }
+
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.patch(
+    const response = await fetch(
       `${API_BASE_URL}/todos/${todoId}/items/${itemId}`,
-      data,
       {
+        method: "PATCH",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({ ...updatedTask, target_todo_id: targetTodoId }),
       }
     );
-    return response.data;
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response:", response.status, errorText);
+      throw new Error("Failed to update item");
+    }
+
+    return await response.json();
   } catch (error) {
-    console.error(
-      "Error updating item:",
-      error.response?.data || error.message
-    );
-    throw new Error("Failed to update item");
+    console.error("Error updating item:", error);
+    throw error;
   }
 };
 

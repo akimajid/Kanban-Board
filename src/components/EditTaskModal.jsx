@@ -1,38 +1,50 @@
-import React, { useState } from "react";
-import { createItem } from "../api/todos";
+import React, { useState, useEffect } from "react";
+import { updateItem } from "../api/todos";
 
-const TaskModal = ({ isOpen, onClose, todoId }) => {
+const EditTaskModal = ({ isOpen, onClose, task, onSave }) => {
   const [taskName, setTaskName] = useState("");
   const [progressPercentage, setProgressPercentage] = useState("");
+  const [targetTodoId, setTargetTodoId] = useState("");
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    if (task) {
+      setTaskName(task.name || "");
+      setProgressPercentage(task.progress_percentage || "");
+      setTargetTodoId(task.todo_id || "");
+    }
+  }, [task]);
+
+  const handleSave = async (e) => {
     e.preventDefault();
 
-    if (!todoId) {
-      console.error("Todo ID is not defined");
+    const todoId = task?.todo_id;
+    const itemId = task?.id;
+
+    if (!todoId || !itemId) {
+      console.error("Invalid todoId or itemId", { todoId, itemId });
       return;
     }
 
-    const progress = parseInt(progressPercentage, 10);
-
-    if (isNaN(progress) || progress < 0 || progress > 100) {
-      console.error("Progress percentage must be between 0 and 100");
-      return;
-    }
+    const updatedTask = {
+      name: taskName,
+      progress_percentage: progressPercentage,
+    };
 
     try {
-      const newTask = {
-        name: taskName,
-        progress_percentage: progress,
-      };
+      const result = await updateItem(
+        todoId,
+        itemId,
+        updatedTask,
+        targetTodoId
+      );
 
-      await createItem(todoId, newTask);
-
+      if (onSave) {
+        onSave();
+      }
       window.location.reload();
-
       onClose();
     } catch (error) {
-      console.error("Error creating task:", error.message);
+      console.error("Failed to edit task", error);
     }
   };
 
@@ -41,10 +53,8 @@ const TaskModal = ({ isOpen, onClose, todoId }) => {
   return (
     <div className="fixed z-10 inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">
-          Create New Task
-        </h2>
-        <form onSubmit={handleSubmit}>
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">Edit Task</h2>
+        <form onSubmit={handleSave}>
           <div className="mb-4">
             <label
               htmlFor="name"
@@ -81,6 +91,22 @@ const TaskModal = ({ isOpen, onClose, todoId }) => {
               required
             />
           </div>
+          {/* <div className="mb-4">
+            <label
+              htmlFor="target_todo_id"
+              className="block text-sm font-medium mb-2 text-gray-700"
+            >
+              Target Todo ID
+            </label>
+            <input
+              type="text"
+              id="target_todo_id"
+              placeholder="Enter target todo ID..."
+              value={targetTodoId}
+              onChange={(e) => setTargetTodoId(e.target.value)}
+              className="w-full border border-gray-300 p-2 rounded text-gray-800"
+            />
+          </div> */}
           <div className="flex justify-end">
             <button
               type="button"
@@ -93,7 +119,7 @@ const TaskModal = ({ isOpen, onClose, todoId }) => {
               type="submit"
               className="bg-[#02939e] text-white hover:bg-white hover:text-[#02939e] hover:border hover:border-[#02939e] text-xs px-4 py-2 rounded-md"
             >
-              Create
+              Save
             </button>
           </div>
         </form>
@@ -102,4 +128,4 @@ const TaskModal = ({ isOpen, onClose, todoId }) => {
   );
 };
 
-export default TaskModal;
+export default EditTaskModal;

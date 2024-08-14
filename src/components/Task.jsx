@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import DeleteTaskModal from "./DeleteTaskModal";
+import EditTaskModal from "./EditTaskModal";
 
 const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
 
   const toggleDropdown = () => {
@@ -29,6 +31,16 @@ const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
   const cancelDelete = () => {
     setTaskToDelete(null);
     setModalOpen(false);
+  };
+
+  const handleEditClick = () => {
+    setEditModalOpen(true);
+    toggleDropdown();
+  };
+
+  const handleSaveEdit = (updatedTask) => {
+    onEdit(updatedTask);
+    setEditModalOpen(false);
   };
 
   return (
@@ -87,10 +99,7 @@ const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
               Move Right
             </button>
             <button
-              onClick={() => {
-                onEdit(task.id);
-                toggleDropdown();
-              }}
+              onClick={handleEditClick}
               className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
               Edit
@@ -109,6 +118,12 @@ const Task = ({ task, onMoveLeft, onMoveRight, onEdit, onDelete }) => {
         isOpen={modalOpen}
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
+      />
+      <EditTaskModal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        task={task}
+        onSave={handleSaveEdit}
       />
     </div>
   );
