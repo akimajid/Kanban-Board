@@ -8,13 +8,12 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is already logged in
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/v1"); // Redirect to the v1 page if already logged in
+      navigate("/v1");
     }
   }, [navigate]);
 
@@ -30,7 +29,7 @@ const SignUp = () => {
       const userData = { name, email, password };
       await signUp(userData);
       setMessage("Registration successful!");
-      navigate("/login"); // Redirect to login page after successful registration
+      navigate("/v1/login");
     } catch (error) {
       setMessage(error.message || "Registration failed");
     }
